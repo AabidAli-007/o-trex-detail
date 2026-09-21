@@ -1,0 +1,9 @@
+{
+  "name": "o-trex-portfolio",
+  "version": "1.0.0",
+  "description": "O-TREX Portfolio Website - Team CODE ZEPHYRA SIH 2026",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static site build complete'"
+  }
+}

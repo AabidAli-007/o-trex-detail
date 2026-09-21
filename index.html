@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O-TREX — Oceanic Tracking & Responsive Explorer | Team CODE ZEPHYRA SIH 2026</title>
+  <meta name="description" content="Autonomous Low-Cost Ocean Observation Platform for Polar and Southern Oceans. Smart India Hackathon 2026 (SIH26065) by Team CODE ZEPHYRA.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-tech-grid">
+
+  <!-- ==========================================================================
+       SITE FULL-PAGE PRELOADER (HIGH-TECH TELEMETRY INITIALIZER)
+       ========================================================================== -->
+  <div id="sitePreloader" class="site-preloader">
+    <div class="preloader-content">
+      <div class="preloader-brand">
+        <img src="assets/otrex-logo.png" alt="O-TREX Logo" class="preloader-logo">
+        <span class="nav-divider"></span>
+        <img src="assets/code-zephyra-logo.png" alt="CODE ZEPHYRA Logo" class="preloader-logo">
+      </div>
+      
+      <div class="preloader-title">
+        O-TREX <span class="text-yellow">SYSTEM INITIALIZING</span>
+      </div>
+      <div class="preloader-subtitle">
+        TEAM CODE ZEPHYRA | SMART INDIA HACKATHON 2026 | PS ID: SIH26065
+      </div>
+
+      <div class="preloader-bar-wrapper">
+        <div class="preloader-bar-fill" id="preloaderFill"></div>
+      </div>
+
+      <div class="preloader-status">
+        <span id="preloaderText"><i class="fa-solid fa-satellite-dish fa-spin"></i> INITIALIZING 3D CAD ENGINE & TELEMETRY...</span>
+        <span id="preloaderPercent" class="text-yellow">0%</span>
+      </div>
+
+      <div class="preloader-badges">
+        <span class="badge-yellow"><i class="fa-solid fa-wifi"></i> LOW NETWORK OPTIMIZED</span>
+        <span class="badge-yellow"><i class="fa-solid fa-cube"></i> INSTANT 3D CAD ENGINE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       NAVBAR
+       ========================================================================== -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#home" class="nav-brand">
+        <img src="assets/otrex-logo.png" alt="O-TREX Logo" class="nav-logo" id="navOtrexLogo" onerror="this.src='assets/otrex-logo.png'; this.onerror=null; if(!this.getAttribute('data-tried')){ this.setAttribute('data-tried', 'true'); this.src='assets/otrex-logo.png'; }">
+        <span class="nav-divider"></span>
+        <img src="assets/code-zephyra-logo.png" alt="CODE ZEPHYRA Logo" class="nav-team-logo">
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">HOME</a></li>
+        <li><a href="#problem" class="nav-link">PROBLEM</a></li>
+        <li><a href="#solution" class="nav-link">SOLUTION</a></li>
+        <li><a href="#techstack" class="nav-link">TECH STACK</a></li>
+        <li><a href="#team" class="nav-link">TEAM</a></li>
+        <li><a href="#contact" class="nav-link">CONTACT</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="https://o-trex.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-yellow btn-sm btn-live-sim">
+          LIVE SIMULATION <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+
+      <button class="hamburger" aria-label="Toggle Mobile Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-menu">
+      <a href="#home" class="mobile-link">HOME</a>
+      <a href="#problem" class="mobile-link">PROBLEM STATEMENT</a>
+      <a href="#solution" class="mobile-link">OUR SOLUTION</a>
+      <a href="#techstack" class="mobile-link">TECH STACK</a>
+      <a href="#team" class="mobile-link">OUR TEAM</a>
+      <a href="#contact" class="mobile-link">CONTACT US</a>
+      <a href="https://o-trex.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-yellow w-full btn-live-sim">
+        LIVE SIMULATION <i class="fa-solid fa-arrow-up-right-from-square"></i>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Fix script for nav logo -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const img = document.getElementById('navOtrexLogo');
+      if (img) img.src = 'assets/otrex-logo.png';
+    });
+  </script>
+
+  <!-- ==========================================================================
+       01 — HOME SECTION
+       ========================================================================== -->
+  <section id="home" class="bg-bathymetry">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badges">
+            <span class="badge-yellow"><i class="fa-solid fa-trophy"></i> SMART INDIA HACKATHON 2026</span>
+            <span class="badge-yellow">PS ID: SIH26065</span>
+            <span class="badge-yellow">SMART AUTOMATION</span>
+            <span class="badge-yellow">HARDWARE</span>
+          </div>
+
+          <h1 class="hero-title">
+            O-TREX
+            <span class="highlight">OCEANIC TRACKING & RESPONSIVE EXPLORER</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Autonomous Low-Cost Ocean Observation Platform for Polar and Southern Oceans. Designed for harsh marine environments, continuously monitoring ocean and atmospheric conditions and deploying an underwater sensor pod for targeted vertical profiling.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#problem" class="btn btn-yellow">
+              EXPLORE O-TREX <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            <a href="https://o-trex.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-live-sim">
+              LIVE SIMULATION <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+
+          <div class="hero-meta-grid">
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">TEAM BRAND</span>
+              <span class="hero-meta-val">CODE ZEPHYRA</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">TARGET ENVIRONMENT</span>
+              <span class="hero-meta-val">POLAR / SOUTHERN</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">TARGET ENDURANCE</span>
+              <span class="hero-meta-val">24–48 H (BATTERY)</span>
+            </div>
+            <div class="hero-meta-item">
+              <span class="hero-meta-label">ESTIMATED MASS</span>
+              <span class="hero-meta-val">35–50 KG (PRE-FAB)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right-col">
+          <!-- Institutional Accreditation & Partner Logos Box -->
+          <div class="hero-partners-card">
+            <div class="partners-logos-row">
+              <img src="assets/sih-partners-banner.png" alt="MoE | AICTE | MIC | SIH 2026" class="partner-logo-item partner-banner" title="Ministry of Education | AICTE | MoE's Innovation Cell | SIH 2026">
+              <div class="partner-divider-v"></div>
+              <img src="assets/moes-logo.png" alt="Ministry of Earth Sciences" class="partner-logo-item partner-badge" title="Ministry of Earth Sciences (MoES), Government of India">
+              <div class="partner-divider-v"></div>
+              <img src="assets/ncpor-logo.png" alt="National Centre for Polar and Ocean Research" class="partner-logo-item partner-badge" title="National Centre for Polar and Ocean Research (NCPOR)">
+            </div>
+          </div>
+
+          <!-- 3D CAD Simulation Viewport Container -->
+          <div class="hero-3d-container" id="hero3dSimulationContainer">
+            <!-- 3D WebGL Canvas renders here automatically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telemetry Marquee Banner -->
+  <div class="telemetry-marquee-strip">
+    <div class="marquee-content">
+      <div class="marquee-item"><i class="fa-solid fa-snowflake"></i> POLAR ENVIRONMENT QUALIFICATION <span>TARGET</span></div>
+      <div class="marquee-item"><i class="fa-solid fa-compass"></i> AUTONOMOUS WAYPOINT CONTROL <span>PIXHAWK 6X</span></div>
+      <div class="marquee-item"><i class="fa-solid fa-droplet"></i> MULTI-PARAMETER SENSING <span>CTD + DO + pH</span></div>
+      <div class="marquee-item"><i class="fa-solid fa-arrows-up-down"></i> TARGETED VERTICAL PROFILING <span>WINCH POD</span></div>
+      <div class="marquee-item"><i class="fa-solid fa-satellite"></i> STORE-AND-FORWARD SATELLITE SYNC <span>IRIDIUM 9603</span></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="marquee-item"><i class="fa-solid fa-snowflake"></i> POLAR ENVIRONMENT QUALIFICATION <span>TARGET</span></div>
+      <div class="marquee-item"><i class="fa-solid fa-compass"></i> AUTONOMOUS WAYPOINT CONTROL <span>PIXHAWK 6X</span></div>
+      <div class="marquee-item"><i class="fa-solid fa-droplet"></i> MULTI-PARAMETER SENSING <span>CTD + DO + pH</span></div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       02 — PROBLEM STATEMENT
+       ========================================================================== -->
+  <section id="problem">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">02 — PROBLEM STATEMENT</div>
+        <h2 class="section-title">OUR PROBLEM STATEMENT</h2>
+        <p class="section-subtitle">
+          AUTONOMOUS LOW-COST OCEAN OBSERVATION PLATFORM FOR POLAR AND SOUTHERN OCEANS (SIH26065)
+        </p>
+      </div>
+
+      <div class="glass-card mb-8">
+        <p class="text-lg" style="color: var(--text-primary); font-size: 1.15rem; line-height: 1.7;">
+          Critical ocean processes remain poorly observed, especially in remote polar and Southern Ocean environments. Severe environmental constraints, ice risks, high logistical costs, and limited endurance of existing surface platforms severely limit continuous long-term scientific data collection.
+        </p>
+      </div>
+
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-num">01</div>
+          <h3 class="problem-title">HARSH & EXTREME ENVIRONMENT</h3>
+          <p class="problem-desc">Sub-zero temperatures, ice hazards, freezing polar spray, and violent gale-force sea states threaten conventional marine hardware.</p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-num">02</div>
+          <h3 class="problem-title">SPARSE IN-SITU OBSERVATIONS</h3>
+          <p class="problem-desc">Polar oceans suffer from significant spatial and temporal oceanographic data gaps, hindering weather and climate prediction models.</p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-num">03</div>
+          <h3 class="problem-title">HIGH OPERATIONAL COST</h3>
+          <p class="problem-desc">Deploying traditional multi-million dollar oceanographic research vessels incurs extreme financial and fuel overheads for routine profiling.</p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-num">04</div>
+          <h3 class="problem-title">LIMITED PLATFORM ENDURANCE</h3>
+          <p class="problem-desc">Existing autonomous drift buoys and small craft lack long-term renewable power autonomy and targeted vertical profiling capabilities.</p>
+        </div>
+
+        <div class="problem-card">
+          <div class="problem-num">05</div>
+          <h3 class="problem-title">CRITICAL DATA GAPS</h3>
+          <p class="problem-desc">Inability to obtain timely in-situ ocean surface and depth telemetry impedes early detection of extreme polar events and climate dynamics.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       03 — OUR SOLUTION
+       ========================================================================== -->
+  <section id="solution">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">03 — OUR SOLUTION</div>
+        <h2 class="section-title">LOW-COST. AUTONOMOUS. ADAPTIVE.</h2>
+        <p class="section-subtitle">
+          O-TREX continuously monitors ocean and atmospheric parameters, detects anomalies, executes explainable profiling decisions, deploys a tethered underwater sensor pod, and syncs data when satellite connectivity restores.
+        </p>
+      </div>
+
+      <!-- Interactive Mission Flow Stepper -->
+      <div class="mission-flow-container">
+        <div class="stepper-header"><i class="fa-solid fa-network-wired"></i> AUTONOMOUS MISSION FLOW (SURFACE TO DEPTH INSIGHT)</div>
+        <div class="mission-stepper">
+          <div class="step-card active" data-step="1">
+            <div class="step-num">STEP 01</div>
+            <div class="step-name">1. DEPLOY</div>
+          </div>
+          <div class="step-card" data-step="2">
+            <div class="step-num">STEP 02</div>
+            <div class="step-name">2. NAVIGATE</div>
+          </div>
+          <div class="step-card" data-step="3">
+            <div class="step-num">STEP 03</div>
+            <div class="step-name">3. MONITOR</div>
+          </div>
+          <div class="step-card" data-step="4">
+            <div class="step-num">STEP 04</div>
+            <div class="step-name">4. ANOMALY DETECTED</div>
+          </div>
+          <div class="step-card" data-step="5">
+            <div class="step-num">STEP 05</div>
+            <div class="step-name">5. PROFILE</div>
+          </div>
+          <div class="step-card" data-step="6">
+            <div class="step-num">STEP 06</div>
+            <div class="step-name">6. CONTINUE</div>
+          </div>
+        </div>
+
+        <div class="step-details-box">
+          <div>
+            <h3 id="stepDetailsTitle" class="text-yellow mb-2" style="font-size: 1.25rem;">01. DEPLOYMENT & INITIALIZATION</h3>
+            <p id="stepDetailsDesc" style="color: var(--text-secondary);">Launch O-TREX into marine environment. Self-check sensors, power levels, GNSS fix, and establish satellite connectivity baseline.</p>
+          </div>
+          <div class="badge-yellow" id="stepDetailsStatus">SYSTEMS ONLINE | GNSS FIXED | BATTERY 100%</div>
+        </div>
+      </div>
+
+      <!-- Subsection: Anomaly Decision System -->
+      <div class="decision-subsection">
+        <div class="section-tag">EXPLAINABLE MISSION LOGIC</div>
+        <h3 class="text-white" style="font-size: 1.8rem;">ANOMALY → DECISION → PROFILE</h3>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+          Rather than relying on unvalidated black-box AI claims, O-TREX utilizes explainable oceanographic decision rules based on quantitative baseline deviations.
+        </p>
+
+        <div class="decision-flow-grid">
+          <div class="threshold-box">
+            <h4 class="text-white"><i class="fa-solid fa-sliders text-yellow"></i> DESIGN / PROTOTYPE DECISION THRESHOLDS</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Profiling is automatically triggered when surface parameters exceed established physical thresholds against a 30-minute rolling baseline:
+            </p>
+            <div class="threshold-val">0.3°C / km Gradient</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">OR</div>
+            <div class="threshold-val">0.1 PSU Salinity Deviation</div>
+          </div>
+
+          <div class="threshold-box">
+            <h4 class="text-white"><i class="fa-solid fa-calculator text-yellow"></i> SCIENCE OPPORTUNITY SCORE</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Determines whether energy budget allows a vertical winch profile:
+            </p>
+            <div class="formula-box">
+              Score = f(Anomaly Mag, Energy Avail, Buffer, Time Since Last Profile)
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">
+              Ensures optimal power preservation during critical polar weather windows.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsection: Sensor Parameter Dashboard -->
+      <div style="margin-top: 4rem;">
+        <div class="section-tag">MULTI-PARAMETER SENSING</div>
+        <h3 class="text-white" style="font-size: 1.8rem;">SURFACE & DEPTH OCEAN PARAMETERS</h3>
+        
+        <div class="params-grid">
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-icon"><i class="fa-solid fa-temperature-three-quarters"></i></div>
+              <span class="badge-yellow">PRIMARY</span>
+            </div>
+            <h4 class="text-white" style="font-size: 1.1rem;">TEMPERATURE (♨)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Tracks seawater temperature across surface and profile depths to detect thermal layering and thermocline shifts.
+            </p>
+          </div>
+
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-icon"><i class="fa-solid fa-water"></i></div>
+              <span class="badge-yellow">PRIMARY</span>
+            </div>
+            <h4 class="text-white" style="font-size: 1.1rem;">SALINITY (≈)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Measures salt concentration (PSU) to understand freshwater meltwater influx and thermohaline circulation.
+            </p>
+          </div>
+
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-icon"><i class="fa-solid fa-gauge-high"></i></div>
+              <span class="badge-yellow">DEPTH</span>
+            </div>
+            <h4 class="text-white" style="font-size: 1.1rem;">PRESSURE / DEPTH (◉)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Accurately logs vertical depth coordinates during winch pod descent and ascent profiling.
+            </p>
+          </div>
+
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-icon"><i class="fa-solid fa-wind"></i></div>
+              <span class="badge-yellow">ATMOSPHERE</span>
+            </div>
+            <h4 class="text-white" style="font-size: 1.1rem;">ATMOSPHERIC DATA (☁)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Records surface barometric pressure, air temperature, and wind speed parameters for air-sea flux modeling.
+            </p>
+          </div>
+
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-icon"><i class="fa-solid fa-vial"></i></div>
+              <span class="badge-yellow">BIOGEOCHEMISTRY</span>
+            </div>
+            <h4 class="text-white" style="font-size: 1.1rem;">pH / DISSOLVED OXYGEN (⚗)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Monitors ocean acidification rates and oxygen depletion zones critical for polar ecosystem health.
+            </p>
+          </div>
+
+          <div class="param-card">
+            <div class="param-header">
+              <div class="param-icon"><i class="fa-solid fa-eye-dropper"></i></div>
+              <span class="badge-yellow">OPTIONAL</span>
+            </div>
+            <h4 class="text-white" style="font-size: 1.1rem;">TURBIDITY (•••)</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+              Detects water clarity, suspended particulate matter, and biological bloom activity in upper ocean layers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsection: Sensor Pod Vertical Profiling -->
+      <div class="sensor-pod-container">
+        <div>
+          <div class="section-tag">TARGETED PROFILING</div>
+          <h3 class="text-white" style="font-size: 1.8rem; margin-bottom: 1rem;">TETHERED UNDERWATER SENSOR POD</h3>
+          <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+            When an anomaly trigger occurs, the onboard motorized winch lowers the electrically shielded tethered sensor pod. Equipped with a high-accuracy CTD (RBRconcerto), DO, pH, and Turbidity array, it captures precise vertical water column profiles without risking main hull buoyancy.
+          </p>
+          <div class="badge-yellow mb-4"><i class="fa-solid fa-shield-halved"></i> SHIELDED TETHER | CTD | DO | pH | TURBIDITY | PRESSURE</div>
+        </div>
+
+        <div class="pod-visual-box">
+          <div class="pod-depth-ruler">
+            <span>0m</span>
+            <span>-50m</span>
+            <span>-100m</span>
+            <span>-200m</span>
+            <span>-300m</span>
+          </div>
+          <img src="assets/general-arrangement.png" alt="O-TREX Sensor Pod Deployment Visual" style="max-height: 280px; width: auto; margin: 0 auto; filter: contrast(1.1);">
+          <div style="margin-top: 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--yellow);">
+            VERTICAL DEPTH PROFILE ACTIVE — SENSOR POD DEPLOYED
+          </div>
+        </div>
+      </div>
+
+      <!-- Subsection: Store-and-Forward Architecture -->
+      <div class="store-forward-box">
+        <div class="section-tag">ZERO DATA LOSS GUARANTEE</div>
+        <h3 class="text-white" style="font-size: 1.6rem;">STORE-AND-FORWARD SATELLITE ARCHITECTURE</h3>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+          During severe polar communication blackouts or satellite geometry gaps, zero telemetry is lost. All sensor samples are stored in onboard non-volatile memory and synced immediately once the Iridium 9603 satellite link restores.
+        </p>
+
+        <div class="sync-flow-steps">
+          <div class="sync-node">SENSOR SAMPLING</div>
+          <div class="sync-arrow">→</div>
+          <div class="sync-node">LOCAL FLASH STORAGE</div>
+          <div class="sync-arrow">→</div>
+          <div class="sync-node" style="border-color: var(--yellow); color: var(--yellow);">COMMUNICATION GAP</div>
+          <div class="sync-arrow">→</div>
+          <div class="sync-node">LINK RESTORED</div>
+          <div class="sync-arrow">→</div>
+          <div class="sync-node" style="background: var(--yellow); color: #000; font-weight: bold;">IRIDIUM SATELLITE SYNC</div>
+        </div>
+      </div>
+
+      <!-- Simulation CTA Banner -->
+      <div class="sim-cta-banner">
+        <div>
+          <span class="badge-yellow mb-2"><i class="fa-solid fa-globe"></i> DIGITAL TWIN SIMULATION</span>
+          <h3 class="text-white" style="font-size: 1.8rem; margin-top: 0.5rem;">EXPERIENCE O-TREX SIMULATION</h3>
+          <p style="color: var(--text-secondary); max-width: 600px; margin-top: 0.5rem;">
+            Explore the autonomous ocean observation mission, path planning, and telemetry visualization through our live online digital simulation.
+          </p>
+        </div>
+        <a href="https://o-trex.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-yellow">
+          LAUNCH LIVE SIMULATION <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       04 — TECH STACK
+       ========================================================================== -->
+  <section id="techstack">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">04 — TECH STACK</div>
+        <h2 class="section-title">HARDWARE & SYSTEM ARCHITECTURE</h2>
+        <p class="section-subtitle">
+          Commercial Off-The-Shelf (COTS) precision components engineered for maximum reliability and field repairability in extreme polar conditions.
+        </p>
+      </div>
+
+      <div class="tech-categories-grid">
+        <div class="tech-cat-card">
+          <div class="tech-cat-title"><i class="fa-solid fa-microchip"></i> COMPUTE & HARDWARE</div>
+          <ul class="tech-item-list">
+            <li>Pixhawk 6X <span class="spec">Autopilot Controller</span></li>
+            <li>Raspberry Pi 5 <span class="spec">Mission Computer</span></li>
+          </ul>
+        </div>
+
+        <div class="tech-cat-card">
+          <div class="tech-cat-title"><i class="fa-solid fa-location-crosshairs"></i> NAVIGATION & IMU</div>
+          <ul class="tech-item-list">
+            <li>u-blox ZED-F9P <span class="spec">GNSS Antenna</span></li>
+            <li>BNO055 <span class="spec">9-DOF IMU Sensor</span></li>
+          </ul>
+        </div>
+
+        <div class="tech-cat-card">
+          <div class="tech-cat-title"><i class="fa-solid fa-vial-circle-check"></i> OCEAN & AIR SENSORS</div>
+          <ul class="tech-item-list">
+            <li>RBRconcerto <span class="spec">CTD Profiler</span></li>
+            <li>DFRobot Sensor <span class="spec">Water Quality</span></li>
+          </ul>
+        </div>
+
+        <div class="tech-cat-card">
+          <div class="tech-cat-title"><i class="fa-solid fa-satellite-dish"></i> SATELLITE COMM</div>
+          <ul class="tech-item-list">
+            <li>Iridium 9603 <span class="spec">Satellite Modem</span></li>
+            <li>4G / 5G Antenna <span class="spec">Coastal Config</span></li>
+          </ul>
+        </div>
+
+        <div class="tech-cat-card">
+          <div class="tech-cat-title"><i class="fa-solid fa-solar-panel"></i> POWER HARVESTING</div>
+          <ul class="tech-item-list">
+            <li>100 W Solar Panel <span class="spec">Primary Source</span></li>
+            <li>Vertical Axis Wind <span class="spec">Auxiliary Turbine</span></li>
+            <li>Dual Battery & BMS <span class="spec">Power Management</span></li>
+          </ul>
+        </div>
+
+        <div class="tech-cat-card">
+          <div class="tech-cat-title"><i class="fa-solid fa-ship"></i> HULL & STRUCTURE</div>
+          <ul class="tech-item-list">
+            <li>Twin-Hull Catamaran <span class="spec">High Stability</span></li>
+            <li>Glass-Fiber / Epoxy <span class="spec">Composite Skin</span></li>
+            <li>Closed-Cell Foam <span class="spec">PVC/PET Core</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Interactive Blueprint Viewer -->
+      <div class="blueprint-section">
+        <div class="flex items-center justify-between mb-4" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div>
+            <div class="section-tag">ENGINEERING DRAWING VIEWER</div>
+            <h3 class="text-white" style="font-size: 1.4rem;">O-TREX GENERAL ARRANGEMENT (SCALE 1:10)</h3>
+          </div>
+          <div class="badge-yellow" id="currentViewLabel">GENERAL ARRANGEMENT — ALL VIEWS</div>
+        </div>
+
+        <div class="blueprint-controls">
+          <button class="view-btn active" data-view="all"><i class="fa-solid fa-layer-group"></i> ALL VIEWS</button>
+          <button class="view-btn" data-view="top"><i class="fa-solid fa-table-cells-large"></i> TOP VIEW</button>
+          <button class="view-btn" data-view="front"><i class="fa-solid fa-arrows-left-right"></i> FRONT VIEW</button>
+          <button class="view-btn" data-view="side"><i class="fa-solid fa-arrows-up-down"></i> SIDE VIEW</button>
+          <button class="view-btn" data-view="iso"><i class="fa-solid fa-cube"></i> ISOMETRIC VIEW</button>
+          <button class="view-btn" data-view="exploded"><i class="fa-solid fa-diagram-project"></i> ANNOTATED COMPONENTS</button>
+          <button class="view-btn" data-view="underwater"><i class="fa-solid fa-water"></i> UNDERWATER VIEW</button>
+        </div>
+
+        <div class="blueprint-viewport">
+          <img src="assets/general-arrangement.png" alt="O-TREX General Arrangement Technical Sheet" id="blueprintTargetImg" class="blueprint-img-target">
+        </div>
+      </div>
+
+      <!-- Pre-Fabrication Technical Specifications Panel -->
+      <div class="specs-summary-grid">
+        <div class="spec-box">
+          <div class="spec-sub">DIMENSIONS (L × W × H)</div>
+          <div class="spec-val">~1500 × 1000 × 600 mm</div>
+          <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.25rem;">PRE-FABRICATION ESTIMATE</div>
+        </div>
+
+        <div class="spec-box">
+          <div class="spec-sub">ESTIMATED MASS</div>
+          <div class="spec-val">35 – 50 kg</div>
+          <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.25rem;">PRE-FABRICATION ESTIMATE</div>
+        </div>
+
+        <div class="spec-box">
+          <div class="spec-sub">TARGET ENDURANCE</div>
+          <div class="spec-val">24 – 48 Hours</div>
+          <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.25rem;">BATTERY ONLY (EXTENDED W/ RENEWABLES)</div>
+        </div>
+
+        <div class="spec-box">
+          <div class="spec-sub">PROTOTYPE COST</div>
+          <div class="spec-val">₹80,000 – ₹1,20,000</div>
+          <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.25rem;">ESTIMATED PROTOTYPE COST</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       05 — OUR TEAM
+       ========================================================================== -->
+  <section id="team">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">05 — OUR TEAM</div>
+        <h2 class="section-title">CODE ZEPHYRA</h2>
+        <p class="section-subtitle">
+          SMART INDIA HACKATHON 2026 | TEAM ID: 12345 | PROBLEM STATEMENT ID: SIH26065
+        </p>
+      </div>
+
+      <div class="team-header-card">
+        <div>
+          <span class="badge-yellow mb-3"><i class="fa-solid fa-users"></i> TEAM BRAND</span>
+          <h3 class="text-white" style="font-size: 2.2rem; margin-top: 0.5rem;">TEAM CODE ZEPHYRA</h3>
+          <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin-top: 0.75rem;">
+            BUILDING AUTONOMOUS SYSTEMS FOR REAL-WORLD IMPACT. Committed to engineering robust, low-cost ocean observation solutions for extreme environments.
+          </p>
+        </div>
+        <img src="assets/code-zephyra-logo.png" alt="CODE ZEPHYRA Official Logo" class="team-logo-large">
+      </div>
+
+      <!-- Real Team Member Profiles -->
+      <div class="team-cards-grid">
+        <!-- Member 1: Aabid Ali A -->
+        <div class="team-card">
+          <div class="team-photo-wrapper">
+            <img src="assets/team/aabid-ali.png" alt="Aabid Ali A" class="team-photo">
+          </div>
+          <h3 class="team-name">Aabid Ali A</h3>
+          <div class="team-role">TEAM LEAD & SYSTEM & MARINE ROBOTICS LEAD</div>
+          <a href="https://www.linkedin.com/in/aabid-ali-302a43385?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer" class="team-linkedin-btn">
+            <i class="fa-brands fa-linkedin"></i> Connect
+          </a>
+        </div>
+
+        <!-- Member 2: Nirmal V -->
+        <div class="team-card">
+          <div class="team-photo-wrapper">
+            <img src="assets/team/nirmal-v.png" alt="Nirmal V" class="team-photo">
+          </div>
+          <h3 class="team-name">Nirmal V</h3>
+          <div class="team-role">POWER & EMBEDDED SYSTEMS ENGINEER</div>
+          <a href="https://www.linkedin.com/in/nirmal-v-a2088b384?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer" class="team-linkedin-btn">
+            <i class="fa-brands fa-linkedin"></i> Connect
+          </a>
+        </div>
+
+        <!-- Member 3: Ashik Rijo Y -->
+        <div class="team-card">
+          <div class="team-photo-wrapper">
+            <img src="assets/team/ashik-rijo.png" alt="Ashik Rijo Y" class="team-photo">
+          </div>
+          <h3 class="team-name">Ashik Rijo Y</h3>
+          <div class="team-role">OCEANOGRAPHIC & SENSOR ENGINEER</div>
+          <a href="https://www.linkedin.com/in/ashik-rijo-588645393?utm_source=share_via&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" class="team-linkedin-btn">
+            <i class="fa-brands fa-linkedin"></i> Connect
+          </a>
+        </div>
+      </div>
+
+      <!-- Development Roadmap G1 to G5 -->
+      <div class="roadmap-container">
+        <div class="section-tag">DEVELOPMENT & DEPLOYMENT ROADMAP</div>
+        <div class="roadmap-grid">
+          <div class="gate-card">
+            <div class="gate-badge">G1 — BENCH VALIDATION</div>
+            <h4 class="text-white" style="font-size: 1rem;">COMPONENTS TEST</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Test sensors, Pixhawk 6X autopilot, RPi 5 controller, and BMS energy systems.</p>
+          </div>
+
+          <div class="gate-card">
+            <div class="gate-badge">G2 — TANK / POND TESTING</div>
+            <h4 class="text-white" style="font-size: 1rem;">HYDROSTATIC TRIALS</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Sealing leak tests, thruster navigation, and tethered winch pod deployment.</p>
+          </div>
+
+          <div class="gate-card">
+            <div class="gate-badge">G3 — OPEN WATER TRIALS</div>
+            <h4 class="text-white" style="font-size: 1rem;">WAYPOINT NAV</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Autonomous GPS navigation, catamaran stability, and live satellite transmission.</p>
+          </div>
+
+          <div class="gate-card">
+            <div class="gate-badge">G4 — EXTENDED MISSION</div>
+            <h4 class="text-white" style="font-size: 1rem;">ENDURANCE RUN</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Multi-day energy budget validation and store-and-forward blackout sync.</p>
+          </div>
+
+          <div class="gate-card" style="border-color: var(--border-yellow);">
+            <div class="gate-badge text-yellow">G5 — POLAR QUALIFICATION</div>
+            <h4 class="text-white" style="font-size: 1rem;">TARGET QUALIFICATION</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Sub-zero cold environment test, ice-risk assessment, and polar deployment.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Impact Chain -->
+      <div class="impact-grid">
+        <div class="impact-card">
+          <h4>SCIENTIFIC IMPACT</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Frequent targeted vertical profiling, continuous surface salinity & temp monitoring, and filling polar oceanographic data gaps.</p>
+        </div>
+
+        <div class="impact-card">
+          <h4>OPERATIONAL IMPACT</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Autonomous waypoint operation, zero human intervention during routine sampling, and zero data loss during polar blackouts.</p>
+        </div>
+
+        <div class="impact-card">
+          <h4>INSTITUTIONAL IMPACT</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">Cost-effective reusable platform for research institutions, polar research programs, and marine environmental monitoring.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       06 — CONTACT US
+       ========================================================================== -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">06 — CONTACT US</div>
+        <h2 class="section-title">GET IN TOUCH</h2>
+        <p class="section-subtitle">
+          O-TREX — OCEANIC TRACKING & RESPONSIVE EXPLORER | TEAM CODE ZEPHYRA | SIH26065
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <form class="contact-form" id="contactForm" action="https://formsubmit.co/codezephyra@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="O-TREX Official Contact Inquiry">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_autorespond" value="false">
+          <input type="text" name="_honey" style="display:none">
+          <input type="hidden" name="_next" value="https://o-trex.vercel.app/#contact">
+
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+            <span class="badge-yellow"><i class="fa-solid fa-envelope"></i> DIRECT EMAIL RECIPIENT:</span>
+            <a href="mailto:codezephyra@gmail.com" class="text-white" style="font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; color: var(--accent-yellow); text-decoration: underline;">codezephyra@gmail.com</a>
+          </div>
+
+          <h3 class="text-white" style="font-size: 1.4rem;">TRANSMIT MESSAGE TO CODE ZEPHYRA</h3>
+          
+          <div id="formAlert" style="display: none; padding: 0.85rem 1rem; margin-bottom: 1rem; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 700;"></div>
+
+          <div class="form-group">
+            <label class="form-label" for="contactName">NAME</label>
+            <input type="text" id="contactName" name="name" class="form-input" placeholder="Your Name or Organization" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="contactEmail">EMAIL</label>
+            <input type="email" id="contactEmail" name="email" class="form-input" placeholder="name@institution.org" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="contactMessage">MESSAGE</label>
+            <textarea id="contactMessage" name="message" class="form-textarea" rows="4" placeholder="Inquire about O-TREX hardware, polar research collaboration, or SIH presentation..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-yellow w-full">
+            SEND MESSAGE TO CODEZEPHYRA@GMAIL.COM <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+
+        <div>
+          <div class="references-box mb-6">
+            <span class="badge-yellow mb-2"><i class="fa-solid fa-book-bookmark"></i> RESEARCH & REFERENCES</span>
+            <h4 class="text-white" style="font-size: 1.2rem; margin-top: 0.5rem;">PROJECT REFERENCES & CASE STUDIES</h4>
+            <ul class="ref-list">
+              <li><a href="https://www.ncpor.res.in/pages/display/270-southern-ocean" target="_blank" class="ref-link"><i class="fa-solid fa-arrow-up-right-from-square text-yellow"></i> NCPOR — Scientific Expeditions to Southern Ocean</a></li>
+              <li><a href="https://ieeexplore.ieee.org/document/10477402" target="_blank" class="ref-link"><i class="fa-solid fa-arrow-up-right-from-square text-yellow"></i> IEEE Xplore — Autonomous Surface Vehicle Review</a></li>
+              <li><a href="https://www.niot.res.in" target="_blank" class="ref-link"><i class="fa-solid fa-arrow-up-right-from-square text-yellow"></i> NIOT — Autonomous Ocean Observing Systems</a></li>
+              <li><a href="https://argo.ucsd.edu" target="_blank" class="ref-link"><i class="fa-solid fa-arrow-up-right-from-square text-yellow"></i> Argo Program — Global Ocean Observing Network</a></li>
+              <li><a href="https://moes.gov.in" target="_blank" class="ref-link"><i class="fa-solid fa-arrow-up-right-from-square text-yellow"></i> Ministry of Earth Sciences (MoES) — Ocean Initiatives</a></li>
+            </ul>
+          </div>
+
+          <div class="glass-card" style="border-color: var(--border-yellow);">
+            <h4 class="text-white mb-2" style="font-size: 1.2rem;">EXPLORE DIGITAL SIMULATION</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+              Access the live interactive simulation environment for O-TREX autonomous waypoint navigation and depth profiling.
+            </p>
+            <a href="https://o-trex.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-yellow w-full btn-live-sim">
+              LAUNCH O-TREX SIMULATION <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Simulation Fullscreen Modal Popup -->
+  <div class="sim-modal-overlay" id="liveSimModal">
+    <div class="sim-modal-content">
+      <div class="sim-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span class="badge-yellow"><i class="fa-solid fa-satellite-dish fa-spin"></i> LIVE SIMULATION</span>
+          <span style="font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; color: #FFFFFF;">O-TREX WEBGL SIMULATION ENVIRONMENT</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="https://o-trex.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-yellow btn-sm">
+            OPEN IN NEW TAB <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+          <button class="sim-modal-close" id="closeSimModal" aria-label="Close Modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="sim-modal-body">
+        <iframe src="https://o-trex.vercel.app/" id="simIframe" title="O-TREX Live Simulation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-logos">
+        <img src="assets/otrex-logo.png" alt="O-TREX Logo" class="footer-logo">
+        <span class="nav-divider"></span>
+        <img src="assets/code-zephyra-logo.png" alt="CODE ZEPHYRA Logo" class="footer-logo">
+      </div>
+
+      <div style="text-align: center;">
+        <h4 class="text-white" style="font-weight: 800; letter-spacing: 0.05em;">O-TREX — OCEANIC TRACKING & RESPONSIVE EXPLORER</h4>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+          TEAM CODE ZEPHYRA | SMART INDIA HACKATHON 2026 | PROBLEM STATEMENT ID: SIH26065
+        </p>
+        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.75rem;">
+          AUTONOMOUS LOW-COST OCEAN OBSERVATION PLATFORM FOR POLAR AND SOUTHERN OCEANS
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Three.js 3D CAD Engine & Loaders (Local for Instant Offline / Slow-Network Execution) -->
+  <script src="js/libs/three.min.js"></script>
+  <script src="js/libs/OrbitControls.js"></script>
+  <script src="js/libs/STLLoader.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+      document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>');
+      document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"><\/script>');
+    }
+  </script>
+  <script src="js/3d-simulation.js"></script>
+
+  <!-- Main JavaScript File -->
+  <script src="js/main.js"></script>
+</body>
+</html>

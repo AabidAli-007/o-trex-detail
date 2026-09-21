@@ -1,0 +1,206 @@
+{
+  "O-TREX_hull_port_1to10.stl": {
+    "watertight": true,
+    "vertices": 58,
+    "faces": 112,
+    "bounds_mm": [
+      [
+        -75.0,
+        -47.0,
+        6.3
+      ],
+      [
+        75.0,
+        -13.0,
+        34.9
+      ]
+    ]
+  },
+  "O-TREX_hull_starboard_1to10.stl": {
+    "watertight": true,
+    "vertices": 58,
+    "faces": 112,
+    "bounds_mm": [
+      [
+        -75.0,
+        13.0,
+        6.3
+      ],
+      [
+        75.0,
+        47.0,
+        34.9
+      ]
+    ]
+  },
+  "O-TREX_deck_and_beams_1to10.stl": {
+    "watertight": true,
+    "vertices": 32,
+    "faces": 48,
+    "bounds_mm": [
+      [
+        -50.0,
+        -35.0,
+        31.0
+      ],
+      [
+        50.0,
+        35.0,
+        40.0
+      ]
+    ]
+  },
+  "O-TREX_solar_panels_1to10.stl": {
+    "watertight": true,
+    "vertices": 16,
+    "faces": 24,
+    "bounds_mm": [
+      [
+        -49.5,
+        -27.5,
+        40.4
+      ],
+      [
+        49.5,
+        27.5,
+        41.6
+      ]
+    ]
+  },
+  "O-TREX_electronics_enclosure_1to10.stl": {
+    "watertight": true,
+    "vertices": 8,
+    "faces": 12,
+    "bounds_mm": [
+      [
+        -19.0,
+        -14.0,
+        40.0
+      ],
+      [
+        19.0,
+        14.0,
+        50.0
+      ]
+    ]
+  },
+  "O-TREX_gnss_1to10.stl": {
+    "watertight": true,
+    "vertices": 580,
+    "faces": 1152,
+    "bounds_mm": [
+      [
+        -5.99,
+        -5.99,
+        50.0
+      ],
+      [
+        5.99,
+        5.99,
+        75.0
+      ]
+    ]
+  },
+  "O-TREX_wind_turbine_1to10.stl": {
+    "watertight": true,
+    "vertices": 116,
+    "faces": 212,
+    "bounds_mm": [
+      [
+        14.19,
+        -11.5,
+        41.0
+      ],
+      [
+        34.1,
+        11.5,
+        72.5
+      ]
+    ]
+  },
+  "O-TREX_antennas_1to10.stl": {
+    "watertight": true,
+    "vertices": 152,
+    "faces": 288,
+    "bounds_mm": [
+      [
+        -26.1,
+        -31.08,
+        42.0
+      ],
+      [
+        26.1,
+        31.08,
+        58.0
+      ]
+    ]
+  },
+  "O-TREX_winch_system_1to10.stl": {
+    "watertight": false,
+    "vertices": 244,
+    "faces": 480,
+    "bounds_mm": [
+      [
+        -18.0,
+        -13.5,
+        17.0
+      ],
+      [
+        18.0,
+        -2.5,
+        62.5
+      ]
+    ]
+  },
+  "O-TREX_sensor_pod_1to10.stl": {
+    "watertight": true,
+    "vertices": 618,
+    "faces": 1152,
+    "bounds_mm": [
+      [
+        -7.4,
+        -15.4,
+        -7.0
+      ],
+      [
+        7.4,
+        -0.6,
+        15.0
+      ]
+    ]
+  },
+  "O-TREX_thrusters_1to10.stl": {
+    "watertight": true,
+    "vertices": 232,
+    "faces": 448,
+    "bounds_mm": [
+      [
+        -5.0,
+        -34.5,
+        13.0
+      ],
+      [
+        5.0,
+        34.5,
+        23.0
+      ]
+    ]
+  },
+  "O-TREX_assembly_1to10.stl": {
+    "watertight": false,
+    "vertices": 2114,
+    "faces": 4040,
+    "bounds_mm": [
+      [
+        -75.0,
+        -47.0,
+        -7.0
+      ],
+      [
+        75.0,
+        47.0,
+        75.0
+      ]
+    ]
+  }
+}

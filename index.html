@@ -18,40 +18,6 @@
 <body class="bg-tech-grid">
 
   <!-- ==========================================================================
-       SITE FULL-PAGE PRELOADER (HIGH-TECH TELEMETRY INITIALIZER)
-       ========================================================================== -->
-  <div id="sitePreloader" class="site-preloader">
-    <div class="preloader-content">
-      <div class="preloader-brand">
-        <img src="assets/otrex-logo.png" alt="O-TREX Logo" class="preloader-logo">
-        <span class="nav-divider"></span>
-        <img src="assets/code-zephyra-logo.png" alt="CODE ZEPHYRA Logo" class="preloader-logo">
-      </div>
-      
-      <div class="preloader-title">
-        O-TREX <span class="text-yellow">SYSTEM INITIALIZING</span>
-      </div>
-      <div class="preloader-subtitle">
-        TEAM CODE ZEPHYRA | SMART INDIA HACKATHON 2026 | PS ID: SIH26065
-      </div>
-
-      <div class="preloader-bar-wrapper">
-        <div class="preloader-bar-fill" id="preloaderFill"></div>
-      </div>
-
-      <div class="preloader-status">
-        <span id="preloaderText"><i class="fa-solid fa-satellite-dish fa-spin"></i> INITIALIZING 3D CAD ENGINE & TELEMETRY...</span>
-        <span id="preloaderPercent" class="text-yellow">0%</span>
-      </div>
-
-      <div class="preloader-badges">
-        <span class="badge-yellow"><i class="fa-solid fa-wifi"></i> LOW NETWORK OPTIMIZED</span>
-        <span class="badge-yellow"><i class="fa-solid fa-cube"></i> INSTANT 3D CAD ENGINE</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
        NAVBAR
        ========================================================================== -->
   <nav class="navbar" id="navbar">
@@ -533,30 +499,7 @@
         </div>
       </div>
 
-      <!-- Interactive Blueprint Viewer -->
-      <div class="blueprint-section">
-        <div class="flex items-center justify-between mb-4" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-          <div>
-            <div class="section-tag">ENGINEERING DRAWING VIEWER</div>
-            <h3 class="text-white" style="font-size: 1.4rem;">O-TREX GENERAL ARRANGEMENT (SCALE 1:10)</h3>
-          </div>
-          <div class="badge-yellow" id="currentViewLabel">GENERAL ARRANGEMENT — ALL VIEWS</div>
-        </div>
 
-        <div class="blueprint-controls">
-          <button class="view-btn active" data-view="all"><i class="fa-solid fa-layer-group"></i> ALL VIEWS</button>
-          <button class="view-btn" data-view="top"><i class="fa-solid fa-table-cells-large"></i> TOP VIEW</button>
-          <button class="view-btn" data-view="front"><i class="fa-solid fa-arrows-left-right"></i> FRONT VIEW</button>
-          <button class="view-btn" data-view="side"><i class="fa-solid fa-arrows-up-down"></i> SIDE VIEW</button>
-          <button class="view-btn" data-view="iso"><i class="fa-solid fa-cube"></i> ISOMETRIC VIEW</button>
-          <button class="view-btn" data-view="exploded"><i class="fa-solid fa-diagram-project"></i> ANNOTATED COMPONENTS</button>
-          <button class="view-btn" data-view="underwater"><i class="fa-solid fa-water"></i> UNDERWATER VIEW</button>
-        </div>
-
-        <div class="blueprint-viewport">
-          <img src="assets/general-arrangement.png" alt="O-TREX General Arrangement Technical Sheet" id="blueprintTargetImg" class="blueprint-img-target">
-        </div>
-      </div>
 
       <!-- Pre-Fabrication Technical Specifications Panel -->
       <div class="specs-summary-grid">
@@ -784,26 +727,7 @@
     </div>
   </section>
 
-  <!-- Live Simulation Fullscreen Modal Popup -->
-  <div class="sim-modal-overlay" id="liveSimModal">
-    <div class="sim-modal-content">
-      <div class="sim-modal-header">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <span class="badge-yellow"><i class="fa-solid fa-satellite-dish fa-spin"></i> LIVE SIMULATION</span>
-          <span style="font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; color: #FFFFFF;">O-TREX WEBGL SIMULATION ENVIRONMENT</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <a href="https://o-trex.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-yellow btn-sm">
-            OPEN IN NEW TAB <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
-          <button class="sim-modal-close" id="closeSimModal" aria-label="Close Modal"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-      </div>
-      <div class="sim-modal-body">
-        <iframe src="https://o-trex.vercel.app/" id="simIframe" title="O-TREX Live Simulation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
+
 
   <!-- ==========================================================================
        FOOTER

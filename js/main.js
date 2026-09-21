@@ -5,9 +5,7 @@
    ========================================================================== */
 
 function runOTrexInit() {
-  initSitePreloader();
   initNavbar();
-  initBlueprintViewer();
   initMissionStepper();
   initContactForm();
   initTelemetryCanvas();
@@ -79,43 +77,6 @@ function initNavbar() {
       });
     });
   }
-}
-
-/* --------------------------------------------------------------------------
-   02. Interactive Blueprint Viewer
-   -------------------------------------------------------------------------- */
-function initBlueprintViewer() {
-  const viewBtns = document.querySelectorAll('.view-btn');
-  const blueprintImg = document.getElementById('blueprintTargetImg');
-  const activeLabel = document.getElementById('currentViewLabel');
-
-  if (!blueprintImg || !viewBtns.length) return;
-
-  // Position transform profiles for the combined blueprint sheet
-  const viewProfiles = {
-    'all': { transform: 'scale(1) translate(0, 0)', label: 'GENERAL ARRANGEMENT — ALL VIEWS' },
-    'top': { transform: 'scale(2.2) translate(35%, 32%)', label: 'TOP VIEW — SCALE 1:10 (SOLAR & WIND)' },
-    'front': { transform: 'scale(2.4) translate(-10%, 25%)', label: 'FRONT VIEW — SCALE 1:10 (THRUSTERS & HULL)' },
-    'side': { transform: 'scale(2.2) translate(-35%, 28%)', label: 'SIDE VIEW — SCALE 1:10 (COMMUNICATION MAST)' },
-    'iso': { transform: 'scale(2.2) translate(30%, -20%)', label: 'ISOMETRIC VIEW — THREE-DIMENSIONAL' },
-    'exploded': { transform: 'scale(2.2) translate(-10%, -15%)', label: 'ANNOTATED COMPONENTS — EXPLODED LAYOUT' },
-    'underwater': { transform: 'scale(2.4) translate(0%, -35%)', label: 'UNDERWATER VIEW — SENSOR POD DEPLOYMENT' }
-  };
-
-  viewBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      viewBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const viewMode = btn.getAttribute('data-view');
-      const profile = viewProfiles[viewMode] || viewProfiles['all'];
-
-      blueprintImg.style.transform = profile.transform;
-      if (activeLabel) {
-        activeLabel.textContent = profile.label;
-      }
-    });
-  });
 }
 
 /* --------------------------------------------------------------------------
@@ -350,102 +311,13 @@ function initScrollReveal() {
 }
 
 /* --------------------------------------------------------------------------
-   08. Live Simulation Button & Modal Handler
+   08. Live Simulation Button Link Handler
    -------------------------------------------------------------------------- */
 function initLiveSimulationHandlers() {
   const liveBtns = document.querySelectorAll('.btn-live-sim, a[href*="o-trex.vercel.app"]');
-  const simModal = document.getElementById('liveSimModal');
-  const closeModal = document.getElementById('closeSimModal');
-  const simContainer = document.getElementById('hero3dSimulationContainer');
 
   liveBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      // 1. Highlight & scroll to 3D Simulation container on page
-      if (simContainer) {
-        simContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        simContainer.style.boxShadow = '0 0 35px #FACC15, 0 0 70px rgba(250, 204, 21, 0.4)';
-        setTimeout(() => {
-          simContainer.style.boxShadow = '';
-        }, 2500);
-
-        if (window.trex3d) {
-          window.trex3d.onWindowResize();
-          window.trex3d.setCameraView('iso');
-        }
-      }
-
-      // 2. Open Fullscreen Interactive Simulation Modal
-      if (simModal) {
-        simModal.classList.add('active');
-      }
-
-      // 3. Open in new tab cleanly
-      const targetUrl = btn.getAttribute('href') || 'https://o-trex.vercel.app/';
-      if (targetUrl && targetUrl.startsWith('http')) {
-        try {
-          window.open(targetUrl, '_blank', 'noopener,noreferrer');
-        } catch(err) {
-          console.log('Window open fallback');
-        }
-      }
-    });
+    btn.setAttribute('target', '_blank');
+    btn.setAttribute('rel', 'noopener noreferrer');
   });
-
-  if (closeModal && simModal) {
-    closeModal.addEventListener('click', () => {
-      simModal.classList.remove('active');
-    });
-
-    simModal.addEventListener('click', (e) => {
-      if (e.target === simModal) {
-        simModal.classList.remove('active');
-      }
-    });
-  }
-}
-
-/* --------------------------------------------------------------------------
-   09. Full-Page Site Telemetry Preloader (Low Network Proof)
-   -------------------------------------------------------------------------- */
-function initSitePreloader() {
-  const preloader = document.getElementById('sitePreloader');
-  const barFill = document.getElementById('preloaderFill');
-  const percentText = document.getElementById('preloaderPercent');
-  const statusText = document.getElementById('preloaderText');
-
-  if (!preloader) return;
-
-  const statusMessages = [
-    'INITIALIZING LOCAL 3D CAD ENGINE...',
-    'LOADING POLAR OCEAN TELEMETRY PIPELINE...',
-    'CONFIGURING PIXHAWK 6X AUTOPILOT STACK...',
-    'SYNCHRONIZING CATAMARAN HYDRODYNAMICS...',
-    'O-TREX SYSTEM READY FOR DEPLOYMENT'
-  ];
-
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += Math.floor(Math.random() * 18) + 12;
-    if (progress > 100) progress = 100;
-
-    if (barFill) barFill.style.width = `${progress}%`;
-    if (percentText) percentText.textContent = `${progress}%`;
-
-    const msgIndex = Math.min(Math.floor((progress / 100) * statusMessages.length), statusMessages.length - 1);
-    if (statusText && statusMessages[msgIndex]) {
-      statusText.innerHTML = `<i class="fa-solid fa-satellite-dish fa-spin"></i> ${statusMessages[msgIndex]}`;
-    }
-
-    if (progress >= 100) {
-      clearInterval(interval);
-      setTimeout(() => {
-        preloader.classList.add('fade-out');
-        setTimeout(() => {
-          preloader.style.display = 'none';
-        }, 600);
-      }, 350);
-    }
-  }, 90);
 }

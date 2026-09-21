@@ -1,6 +1,6 @@
 /* ==========================================================================
-   O-TREX: 3D CAD REAL-TIME SIMULATION ENGINE (SLOW NETWORK PROOF)
-   THREE.JS + STL LOADER + INSTANT PARAMETRIC CAD FALLBACK
+   O-TREX: 3D CAD REAL-TIME SIMULATION ENGINE
+   THREE.JS + STL LOADER + INTERACTIVE TELEMETRY CONTROLS
    TEAM CODE ZEPHYRA | SMART INDIA HACKATHON 2026
    ========================================================================== */
 
@@ -14,7 +14,7 @@ class OTrex3DSimulation {
     this.renderer = null;
     this.controls = null;
 
-    // Component Meshes & Groups
+    // Component Meshes
     this.parts = {};
     this.modelGroup = new THREE.Group();
     this.sensorPodGroup = new THREE.Group();
@@ -22,14 +22,12 @@ class OTrex3DSimulation {
     this.tetherLine = null;
 
     // Animation States
-    this.autoRotate = true;
+    this.autoRotate = false;
     this.podDeployed = false;
     this.targetPodY = 0; // Local Y displacement
     this.currentPodY = 0;
     this.renderMode = 'tactical'; // 'tactical', 'wireframe', 'xray'
     this.isLoaded = false;
-    this.usingProceduralModel = false;
-    this.stlLoaded = false;
 
     // Materials Palette (O-TREX Identity)
     this.materials = {
@@ -59,17 +57,10 @@ class OTrex3DSimulation {
     this.setupScene();
     this.setupLights();
     this.setupWaterGrid();
+    this.loadSTLModel();
     this.setupControls();
     this.setupUI();
-
-    // 1. Instantly build parametric 3D model (0ms delay, works 100% offline or on slow network)
-    this.buildProceduralModel();
-
-    // 2. Start animation & rendering loop immediately
     this.animate();
-
-    // 3. Try loading high-poly STL CAD assembly in background
-    this.loadSTLModelAsync();
 
     window.addEventListener('resize', () => this.onWindowResize());
   }
@@ -98,9 +89,8 @@ class OTrex3DSimulation {
     this.container.innerHTML = '';
     this.container.appendChild(this.renderer.domElement);
     this.scene.add(this.modelGroup);
-    this.scene.add(this.sensorPodGroup);
 
-    // Multi-pass resize triggers to ensure 3D canvas expands properly as DOM renders
+    // Layout observers
     setTimeout(() => this.onWindowResize(), 50);
     setTimeout(() => this.onWindowResize(), 250);
     setTimeout(() => this.onWindowResize(), 800);
@@ -145,7 +135,7 @@ class OTrex3DSimulation {
       gapSize: 1,
       scale: 1
     });
-    const points = [new THREE.Vector3(25, 16, 0), new THREE.Vector3(25, 0, 0)];
+    const points = [new THREE.Vector3(0, 30, 0), new THREE.Vector3(0, 0, 0)];
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     this.tetherLine = new THREE.Line(geometry, lineMaterial);
     this.tetherLine.computeLineDistances();
@@ -162,143 +152,7 @@ class OTrex3DSimulation {
     this.controls.target.set(0, 20, 0);
   }
 
-  // Instantly constructs parametric 3D catamaran model in 0 milliseconds (Network Independent)
-  buildProceduralModel() {
-    this.usingProceduralModel = true;
-    this.parts = {};
-
-    while(this.modelGroup.children.length > 0) {
-      this.modelGroup.remove(this.modelGroup.children[0]);
-    }
-    while(this.sensorPodGroup.children.length > 0) {
-      this.sensorPodGroup.remove(this.sensorPodGroup.children[0]);
-    }
-
-    // 1. Port & Starboard Twin Hulls
-    const hullGeo = new THREE.CylinderGeometry(7, 11, 140, 16);
-    hullGeo.rotateZ(Math.PI / 2);
-    hullGeo.scale(1, 0.6, 1);
-
-    const portHull = new THREE.Mesh(hullGeo, this.materials.hull);
-    portHull.position.set(0, 0, -45);
-    portHull.castShadow = true;
-    portHull.receiveShadow = true;
-
-    const stbdHull = new THREE.Mesh(hullGeo, this.materials.hull);
-    stbdHull.position.set(0, 0, 45);
-    stbdHull.castShadow = true;
-    stbdHull.receiveShadow = true;
-
-    this.modelGroup.add(portHull);
-    this.modelGroup.add(stbdHull);
-    this.parts['hull_port'] = portHull;
-    this.parts['hull_starboard'] = stbdHull;
-
-    // Streamlined Bow Cones
-    const coneGeo = new THREE.ConeGeometry(9, 25, 16);
-    coneGeo.rotateZ(-Math.PI / 2);
-    coneGeo.scale(0.7, 1, 1);
-
-    const portBow = new THREE.Mesh(coneGeo, this.materials.hull);
-    portBow.position.set(75, 0, -45);
-    const stbdBow = new THREE.Mesh(coneGeo, this.materials.hull);
-    stbdBow.position.set(75, 0, 45);
-    this.modelGroup.add(portBow);
-    this.modelGroup.add(stbdBow);
-
-    // 2. Crossbeams & Main Deck Platform
-    const deckGeo = new THREE.BoxGeometry(110, 6, 94);
-    const deckMesh = new THREE.Mesh(deckGeo, this.materials.deck);
-    deckMesh.position.set(0, 10, 0);
-    deckMesh.castShadow = true;
-    deckMesh.receiveShadow = true;
-    this.modelGroup.add(deckMesh);
-    this.parts['deck'] = deckMesh;
-
-    // 3. Electronics Enclosure Bay
-    const encGeo = new THREE.BoxGeometry(50, 22, 40);
-    const encMesh = new THREE.Mesh(encGeo, this.materials.enclosure);
-    encMesh.position.set(-10, 22, 0);
-    encMesh.castShadow = true;
-    this.modelGroup.add(encMesh);
-    this.parts['enclosure'] = encMesh;
-
-    // 4. Twin Solar Panels
-    const solarGeo = new THREE.BoxGeometry(45, 2, 38);
-    const solarPort = new THREE.Mesh(solarGeo, this.materials.solar);
-    solarPort.position.set(15, 14, -24);
-    solarPort.rotation.x = -0.12;
-    const solarStbd = new THREE.Mesh(solarGeo, this.materials.solar);
-    solarStbd.position.set(15, 14, 24);
-    solarStbd.rotation.x = 0.12;
-    this.modelGroup.add(solarPort);
-    this.modelGroup.add(solarStbd);
-    this.parts['solar'] = solarPort;
-
-    // 5. Communication Mast & GNSS Dome
-    const mastGeo = new THREE.CylinderGeometry(1.5, 2, 50);
-    const mastMesh = new THREE.Mesh(mastGeo, this.materials.antennas);
-    mastMesh.position.set(-25, 45, 0);
-    this.modelGroup.add(mastMesh);
-    this.parts['antennas'] = mastMesh;
-
-    const gnssGeo = new THREE.SphereGeometry(6, 16, 16);
-    gnssGeo.scale(1, 0.6, 1);
-    const gnssMesh = new THREE.Mesh(gnssGeo, this.materials.gnss);
-    gnssMesh.position.set(-25, 70, 0);
-    this.modelGroup.add(gnssMesh);
-    this.parts['gnss'] = gnssMesh;
-
-    // 6. Winch System & Deployable Sensor Pod
-    const winchGeo = new THREE.CylinderGeometry(8, 8, 16, 16);
-    winchGeo.rotateX(Math.PI / 2);
-    const winchMesh = new THREE.Mesh(winchGeo, this.materials.winch);
-    winchMesh.position.set(25, 16, 0);
-    this.modelGroup.add(winchMesh);
-    this.parts['winch'] = winchMesh;
-
-    // Deployable Sensor Pod
-    const podBodyGeo = new THREE.CylinderGeometry(5, 5, 22, 16);
-    const podBody = new THREE.Mesh(podBodyGeo, this.materials.sensorPod);
-    const podCap = new THREE.Mesh(new THREE.ConeGeometry(5, 8, 16), this.materials.sensorPod);
-    podCap.position.y = -15;
-    podCap.rotation.x = Math.PI;
-    
-    this.sensorPodGroup.add(podBody);
-    this.sensorPodGroup.add(podCap);
-    this.sensorPodGroup.position.set(25, 0, 0);
-    this.parts['sensor_pod'] = podBody;
-
-    // 7. Dual Thrusters
-    const thrusterGeo = new THREE.CylinderGeometry(5, 6, 20, 16);
-    thrusterGeo.rotateZ(Math.PI / 2);
-    const thrusterPort = new THREE.Mesh(thrusterGeo, this.materials.thrusters);
-    thrusterPort.position.set(-65, -4, -45);
-    const thrusterStbd = new THREE.Mesh(thrusterGeo, this.materials.thrusters);
-    thrusterStbd.position.set(-65, -4, 45);
-    this.modelGroup.add(thrusterPort);
-    this.modelGroup.add(thrusterStbd);
-    this.parts['thrusters'] = thrusterPort;
-
-    // 8. Wind Turbine
-    const turbineHub = new THREE.Mesh(new THREE.CylinderGeometry(3, 3, 8, 12), this.materials.windTurbine);
-    turbineHub.rotation.x = Math.PI / 2;
-    turbineHub.position.set(30, 48, 0);
-    const bladeGeo = new THREE.BoxGeometry(2, 28, 0.5);
-    const blade1 = new THREE.Mesh(bladeGeo, this.materials.windTurbine);
-    blade1.position.set(30, 48, 0);
-    this.windTurbineMesh = blade1;
-    this.modelGroup.add(turbineHub);
-    this.modelGroup.add(blade1);
-    this.parts['wind_turbine'] = blade1;
-
-    this.isLoaded = true;
-    console.log('O-TREX Instant 3D Parametric CAD Model loaded (0ms delay)!');
-  }
-
-  loadSTLModelAsync() {
-    if (typeof THREE.STLLoader === 'undefined') return;
-
+  loadSTLModel() {
     const loader = new THREE.STLLoader();
     const stlPartsConfig = [
       { file: 'O-TREX_hull_port_1to10.stl', key: 'hull_port', mat: this.materials.hull },
@@ -316,18 +170,8 @@ class OTrex3DSimulation {
 
     let loadedCount = 0;
     const totalParts = stlPartsConfig.length;
-    const newModelGroup = new THREE.Group();
-    const newSensorPodGroup = new THREE.Group();
-    const newParts = {};
-    let newTurbineMesh = null;
 
-    // Timeout safety net (3 seconds for slow networks)
-    const timeoutTimer = setTimeout(() => {
-      if (!this.stlLoaded) {
-        console.log('Slow network detected. Retaining instant parametric 3D model.');
-        this.updateNetworkBadge('3D MODE: INSTANT CAD SIMULATION (SLOW NETWORK ACTIVE)');
-      }
-    }, 3000);
+    this.showLoadingStatus('LOADING O-TREX 3D CAD MODEL...');
 
     stlPartsConfig.forEach(config => {
       loader.load(
@@ -341,57 +185,86 @@ class OTrex3DSimulation {
           mesh.receiveShadow = true;
 
           if (config.isPod) {
-            newSensorPodGroup.add(mesh);
-            newParts[config.key] = mesh;
+            this.sensorPodGroup.add(mesh);
+            this.parts[config.key] = mesh;
           } else {
-            newModelGroup.add(mesh);
-            newParts[config.key] = mesh;
+            this.modelGroup.add(mesh);
+            this.parts[config.key] = mesh;
             if (config.key === 'wind_turbine') {
-              newTurbineMesh = mesh;
+              this.windTurbineMesh = mesh;
             }
           }
 
           loadedCount++;
+          const percent = Math.round((loadedCount / totalParts) * 100);
+          this.showLoadingStatus(`LOADING CAD PARTS: ${percent}%`);
 
           if (loadedCount === totalParts) {
-            clearTimeout(timeoutTimer);
-            this.stlLoaded = true;
-            this.usingProceduralModel = false;
-
-            // Swap to high-poly CAD geometry seamlessly
-            this.scene.remove(this.modelGroup);
-            this.scene.remove(this.sensorPodGroup);
-
-            this.modelGroup = newModelGroup;
-            this.sensorPodGroup = newSensorPodGroup;
-            this.parts = newParts;
-            if (newTurbineMesh) this.windTurbineMesh = newTurbineMesh;
-
-            this.scene.add(this.modelGroup);
-            this.scene.add(this.sensorPodGroup);
-            this.sensorPodGroup.position.set(0, 0, 0);
-            this.sensorPodGroup.position.y = this.currentPodY;
-
-            this.updateNetworkBadge('3D MODE: HIGH-PRECISION CAD ASSEMBLY ONLINE');
-            console.log('O-TREX High-Poly STL CAD Model loaded & swapped successfully!');
+            this.onAllPartsLoaded();
           }
         },
         undefined,
         (error) => {
-          clearTimeout(timeoutTimer);
-          this.updateNetworkBadge('3D MODE: INSTANT CAD SIMULATION ONLINE');
+          console.warn(`Failed loading ${config.file}, trying single assembly fallback...`, error);
+          this.loadSingleAssemblyFallback();
         }
       );
     });
   }
 
-  updateNetworkBadge(text) {
-    const teleMode = document.getElementById('teleModeStatus');
-    if (teleMode) teleMode.textContent = text;
+  loadSingleAssemblyFallback() {
+    const loader = new THREE.STLLoader();
+    loader.load('assets/trex_model.stl', (geometry) => {
+      geometry.rotateX(-Math.PI / 2);
+      geometry.computeVertexNormals();
+      geometry.center();
+      const mesh = new THREE.Mesh(geometry, this.materials.hull);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      this.modelGroup.add(mesh);
+      this.onAllPartsLoaded();
+    }, undefined, (err) => {
+      console.error('Failed loading fallback assembly STL', err);
+      this.hideLoadingStatus();
+    });
+  }
+
+  onAllPartsLoaded() {
+    this.scene.add(this.sensorPodGroup);
+    this.isLoaded = true;
+
+    this.modelGroup.position.set(0, 0, 0);
+    this.sensorPodGroup.position.set(0, 0, 0);
+
+    this.hideLoadingStatus();
+    console.log('O-TREX 3D CAD Model loaded successfully!');
+  }
+
+  showLoadingStatus(msg) {
+    let loaderEl = this.container.querySelector('.sim-3d-loader');
+    if (!loaderEl) {
+      loaderEl = document.createElement('div');
+      loaderEl.className = 'sim-3d-loader';
+      loaderEl.style.cssText = `
+        position: absolute; inset: 0; background: rgba(7, 9, 14, 0.85); backdrop-filter: blur(8px);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        z-index: 10; color: #FACC15; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+        transition: opacity 0.5s ease;
+      `;
+      this.container.appendChild(loaderEl);
+    }
+    loaderEl.innerHTML = `<i class="fa-solid fa-gear fa-spin" style="font-size: 2rem; margin-bottom: 0.75rem;"></i><span>${msg}</span>`;
+  }
+
+  hideLoadingStatus() {
+    const loaderEl = this.container.querySelector('.sim-3d-loader');
+    if (loaderEl) {
+      loaderEl.style.opacity = '0';
+      setTimeout(() => loaderEl.remove(), 500);
+    }
   }
 
   setupUI() {
-    // Add Control Overlay Toolbar onto the 3D Canvas Container
     const toolbar = document.createElement('div');
     toolbar.className = 'sim-3d-toolbar';
     toolbar.innerHTML = `
@@ -405,24 +278,22 @@ class OTrex3DSimulation {
       <div class="sim-toolbar-group">
         <button class="sim-btn" id="btnTogglePod"><i class="fa-solid fa-arrows-down-to-line"></i> <span id="podBtnText">DEPLOY POD</span></button>
         <button class="sim-btn" id="btnToggleWireframe"><i class="fa-solid fa-vector-square"></i> CAD WIREFRAME</button>
-        <button class="sim-btn active" id="btnToggleRotate"><i class="fa-solid fa-rotate"></i> ROTATE</button>
+        <button class="sim-btn" id="btnToggleRotate"><i class="fa-solid fa-rotate"></i> ROTATE</button>
       </div>
     `;
 
-    // Live Telemetry Readout Box Overlay
     const telemetryBox = document.createElement('div');
     telemetryBox.className = 'sim-3d-telemetry';
     telemetryBox.innerHTML = `
       <div class="tele-line"><span class="tele-dot"></span> <strong>O-TREX 3D CAD SIMULATION</strong></div>
-      <div class="tele-val">PITCH: <span id="telePitch">+0.4°</span> | ROLL: <span id="teleRoll">-0.2°</span></div>
+      <div class="tele-val">PITCH: <span id="telePitch">0.0°</span> | ROLL: <span id="teleRoll">0.0°</span></div>
       <div class="tele-val">POD DEPTH: <span id="telePodDepth" class="text-yellow">0.0 m</span></div>
-      <div class="tele-val"><span id="teleModeStatus" class="text-yellow" style="font-size: 0.75rem;">3D MODE: INSTANT CAD SIMULATION ONLINE</span></div>
+      <div class="tele-val">AUTOPILOT: <span class="text-yellow">PIXHAWK 6X READY</span></div>
     `;
 
     this.container.appendChild(toolbar);
     this.container.appendChild(telemetryBox);
 
-    // Bind Toolbar Events
     toolbar.querySelectorAll('[data-cam]').forEach(btn => {
       btn.addEventListener('click', () => {
         toolbar.querySelectorAll('[data-cam]').forEach(b => b.classList.remove('active'));
@@ -490,7 +361,7 @@ class OTrex3DSimulation {
     const teleDepth = document.getElementById('telePodDepth');
 
     if (this.podDeployed) {
-      this.targetPodY = -60; // Lower pod 60 units downwards
+      this.targetPodY = -60;
       if (btnText) btnText.textContent = 'RETRACT POD';
       if (teleDepth) teleDepth.textContent = '-15.0 m';
       this.setCameraView('pod');
@@ -535,42 +406,28 @@ class OTrex3DSimulation {
       this.controls.update();
     }
 
-    // Animate Pod lowering / raising
     if (Math.abs(this.currentPodY - this.targetPodY) > 0.1) {
       this.currentPodY += (this.targetPodY - this.currentPodY) * 0.05;
       this.sensorPodGroup.position.y = this.currentPodY;
 
       if (this.tetherLine) {
         const positions = this.tetherLine.geometry.attributes.position.array;
-        positions[3] = 25; // X
-        positions[4] = this.currentPodY; // Y
-        positions[5] = 0; // Z
+        positions[3] = 0;
+        positions[4] = this.currentPodY;
+        positions[5] = 0;
         this.tetherLine.geometry.attributes.position.needsUpdate = true;
         this.tetherLine.computeLineDistances();
       }
     }
 
-    // Animate Wind Turbine rotation
-    if (this.windTurbineMesh) {
-      this.windTurbineMesh.rotation.z += 0.08;
-    }
+    if (this.isLoaded && !this.autoRotate) {
+      this.modelGroup.rotation.z = 0;
+      this.modelGroup.rotation.x = 0;
 
-    // Wave Pitch / Roll Simulation
-    if (this.isLoaded) {
-      const time = performance.now() * 0.001;
-      const pitch = Math.sin(time * 1.2) * 0.03;
-      const roll = Math.cos(time * 1.5) * 0.02;
-      
-      this.modelGroup.rotation.z = roll;
-      this.modelGroup.rotation.x = pitch;
-
-      const pitchDeg = (pitch * (180 / Math.PI)).toFixed(1);
-      const rollDeg = (roll * (180 / Math.PI)).toFixed(1);
-      
       const pitchEl = document.getElementById('telePitch');
       const rollEl = document.getElementById('teleRoll');
-      if (pitchEl) pitchEl.textContent = `${pitchDeg >= 0 ? '+' : ''}${pitchDeg}°`;
-      if (rollEl) rollEl.textContent = `${rollDeg >= 0 ? '+' : ''}${rollDeg}°`;
+      if (pitchEl) pitchEl.textContent = `0.0°`;
+      if (rollEl) rollEl.textContent = `0.0°`;
     }
 
     if (this.renderer && this.scene && this.camera) {

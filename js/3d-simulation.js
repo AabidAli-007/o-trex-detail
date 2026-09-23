@@ -1,6 +1,6 @@
 /* ==========================================================================
    O-TREX: 3D CAD REAL-TIME SIMULATION ENGINE
-   THREE.JS + STL LOADER + PROCEDURAL CAD FALLBACK + TELEMETRY CONTROLS
+   THREE.JS + MULTI-PART STL CAD LOADER + REALISTIC COMPONENT COLORING
    TEAM CODE ZEPHYRA | SMART INDIA HACKATHON 2026
    ========================================================================== */
 
@@ -14,31 +14,31 @@ class OTrex3DSimulation {
     this.renderer = null;
     this.controls = null;
 
-    // Component Groups
+    // Component Meshes
     this.parts = {};
     this.modelGroup = new THREE.Group();
     this.sensorPodGroup = new THREE.Group();
-    this.windTurbineGroup = new THREE.Group();
+    this.windTurbineMesh = null;
     this.tetherLine = null;
 
-    // States
+    // Animation States
     this.autoRotate = false;
     this.podDeployed = false;
     this.targetPodY = 0;
     this.currentPodY = 0;
     this.renderMode = 'tactical'; // 'tactical' or 'wireframe'
     this.isLoaded = false;
-    this.stlAttempted = false;
 
-    // Material Palette
+    // Realistic Multi-Color Component Materials (O-TREX Identity)
     this.materials = {
-      hull: new THREE.MeshStandardMaterial({ color: 0xFACC15, metalness: 0.3, roughness: 0.3, name: 'hull' }),
+      hull_port: new THREE.MeshStandardMaterial({ color: 0xFACC15, metalness: 0.3, roughness: 0.3, name: 'hull_port' }),
+      hull_starboard: new THREE.MeshStandardMaterial({ color: 0xFACC15, metalness: 0.3, roughness: 0.3, name: 'hull_starboard' }),
       deck: new THREE.MeshStandardMaterial({ color: 0x1E293B, metalness: 0.6, roughness: 0.4, name: 'deck' }),
       solar: new THREE.MeshStandardMaterial({ color: 0x0284C7, metalness: 0.9, roughness: 0.1, name: 'solar' }),
-      windTurbine: new THREE.MeshStandardMaterial({ color: 0x94A3B8, metalness: 0.8, roughness: 0.2, name: 'turbine' }),
+      wind_turbine: new THREE.MeshStandardMaterial({ color: 0x94A3B8, metalness: 0.8, roughness: 0.2, name: 'wind_turbine' }),
       thrusters: new THREE.MeshStandardMaterial({ color: 0x0F172A, metalness: 0.9, roughness: 0.2, name: 'thrusters' }),
       winch: new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.7, roughness: 0.3, name: 'winch' }),
-      sensorPod: new THREE.MeshStandardMaterial({ color: 0xFACC15, metalness: 0.8, roughness: 0.2, name: 'pod' }),
+      sensor_pod: new THREE.MeshStandardMaterial({ color: 0xFACC15, metalness: 0.8, roughness: 0.2, name: 'sensor_pod' }),
       gnss: new THREE.MeshStandardMaterial({ color: 0xF8FAFC, metalness: 0.1, roughness: 0.2, name: 'gnss' }),
       antennas: new THREE.MeshStandardMaterial({ color: 0x0F172A, metalness: 0.8, roughness: 0.2, name: 'antennas' }),
       enclosure: new THREE.MeshStandardMaterial({ color: 0x1E293B, metalness: 0.5, roughness: 0.4, name: 'enclosure' }),
@@ -54,12 +54,9 @@ class OTrex3DSimulation {
     this.setupScene();
     this.setupLights();
     this.setupWaterGrid();
+    this.loadSTLModel();
     this.setupControls();
     this.setupUI();
-    
-    // Start Model Loading (with guaranteed fallback)
-    this.loadModelWithFallback();
-
     this.animate();
 
     window.addEventListener('resize', () => this.onWindowResize());
@@ -74,7 +71,7 @@ class OTrex3DSimulation {
     const aspect = (width > 0 && height > 0) ? (width / height) : (600 / 540);
 
     this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 2000);
-    this.camera.position.set(140, 110, 170);
+    this.camera.position.set(160, 130, 190);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     this.renderer.setSize(width, height);
@@ -82,7 +79,7 @@ class OTrex3DSimulation {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.25;
+    this.renderer.toneMappingExposure = 1.2;
 
     this.renderer.domElement.style.cssText = "width: 100% !important; height: 100% !important; display: block; border-radius: 12px;";
 
@@ -91,7 +88,7 @@ class OTrex3DSimulation {
     this.scene.add(this.modelGroup);
     this.scene.add(this.sensorPodGroup);
 
-    // Dynamic resize observers
+    // Layout observers
     setTimeout(() => this.onWindowResize(), 50);
     setTimeout(() => this.onWindowResize(), 250);
     setTimeout(() => this.onWindowResize(), 800);
@@ -104,26 +101,26 @@ class OTrex3DSimulation {
   }
 
   setupLights() {
-    // Hemisphere light for natural ambient sky/sea illumination
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x0EA5E9, 1.2);
-    this.scene.add(hemiLight);
+    // Ambient soft fill light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    this.scene.add(ambientLight);
 
-    // Primary Sun Light
-    const sunLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    // Main Sun Directional Light
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.3);
     sunLight.position.set(120, 200, 150);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 2048;
     sunLight.shadow.mapSize.height = 2048;
     this.scene.add(sunLight);
 
-    // Ocean Rim Light
-    const rimLight = new THREE.DirectionalLight(0x0EA5E9, 0.9);
+    // Secondary Ocean Rim Light
+    const rimLight = new THREE.DirectionalLight(0x0EA5E9, 0.8);
     rimLight.position.set(-150, 50, -100);
     this.scene.add(rimLight);
 
-    // Telemetry Yellow Highlight Light
+    // Yellow Accent Light
     const yellowLight = new THREE.PointLight(0xFACC15, 1.2, 300);
-    yellowLight.position.set(0, 60, 0);
+    yellowLight.position.set(0, 50, 0);
     this.scene.add(yellowLight);
   }
 
@@ -134,7 +131,7 @@ class OTrex3DSimulation {
     gridHelper.material.transparent = true;
     this.scene.add(gridHelper);
 
-    // Sensor Pod Winch Cable Line
+    // Deployed sensor pod tether line
     const lineMaterial = new THREE.LineDashedMaterial({
       color: 0xFACC15,
       dashSize: 2,
@@ -158,90 +155,31 @@ class OTrex3DSimulation {
     this.controls.target.set(0, 15, 0);
   }
 
-  loadModelWithFallback() {
-    this.showLoadingStatus('LOADING O-TREX 3D CAD MODEL...');
-
-    // Set fallback safety timer (3.5 seconds)
-    const fallbackTimer = setTimeout(() => {
-      if (!this.isLoaded) {
-        console.warn('STL loading timeout reached. Generating Procedural O-TREX CAD Assembly...');
-        this.buildProceduralCADModel();
-      }
-    }, 3500);
-
-    // Try loading single assembly or multi-part STL
-    if (typeof THREE.STLLoader !== 'undefined') {
-      const loader = new THREE.STLLoader();
-      const stlPath = 'assets/stl_parts/O-TREX_assembly_1to10.stl';
-      
-      loader.load(
-        stlPath,
-        (geometry) => {
-          clearTimeout(fallbackTimer);
-          if (this.isLoaded) return;
-
-          geometry.rotateX(-Math.PI / 2);
-          geometry.computeVertexNormals();
-          geometry.center();
-
-          const mesh = new THREE.Mesh(geometry, this.materials.hull);
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
-
-          // Scale & Center cleanly
-          geometry.computeBoundingBox();
-          const box = geometry.boundingBox;
-          const size = new THREE.Vector3();
-          box.getSize(size);
-          const maxDim = Math.max(size.x, size.y, size.z);
-          if (maxDim > 0) {
-            const scaleFactor = 130 / maxDim;
-            mesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
-          }
-
-          this.modelGroup.add(mesh);
-          this.parts['stl_assembly'] = mesh;
-          
-          // Also build procedural pod & turbine for interaction
-          this.attachInteractiveComponents();
-
-          this.onModelReady();
-        },
-        undefined,
-        (err) => {
-          console.warn('Single STL assembly load failed, trying parts or procedural build...', err);
-          this.tryLoadMultiParts(fallbackTimer);
-        }
-      );
-    } else {
-      clearTimeout(fallbackTimer);
-      this.buildProceduralCADModel();
-    }
-  }
-
-  tryLoadMultiParts(fallbackTimer) {
+  loadSTLModel() {
     const loader = new THREE.STLLoader();
-    const partsConfig = [
-      { file: 'O-TREX_hull_port_1to10.stl', key: 'hull_port', mat: this.materials.hull },
-      { file: 'O-TREX_hull_starboard_1to10.stl', key: 'hull_starboard', mat: this.materials.hull },
+    const stlPartsConfig = [
+      { file: 'O-TREX_hull_port_1to10.stl', key: 'hull_port', mat: this.materials.hull_port },
+      { file: 'O-TREX_hull_starboard_1to10.stl', key: 'hull_starboard', mat: this.materials.hull_starboard },
       { file: 'O-TREX_deck_and_beams_1to10.stl', key: 'deck', mat: this.materials.deck },
       { file: 'O-TREX_solar_panels_1to10.stl', key: 'solar', mat: this.materials.solar },
-      { file: 'O-TREX_wind_turbine_1to10.stl', key: 'wind_turbine', mat: this.materials.windTurbine },
+      { file: 'O-TREX_wind_turbine_1to10.stl', key: 'wind_turbine', mat: this.materials.wind_turbine },
       { file: 'O-TREX_thrusters_1to10.stl', key: 'thrusters', mat: this.materials.thrusters },
       { file: 'O-TREX_winch_system_1to10.stl', key: 'winch', mat: this.materials.winch },
-      { file: 'O-TREX_sensor_pod_1to10.stl', key: 'sensor_pod', mat: this.materials.sensorPod, isPod: true },
+      { file: 'O-TREX_sensor_pod_1to10.stl', key: 'sensor_pod', mat: this.materials.sensor_pod, isPod: true },
       { file: 'O-TREX_gnss_1to10.stl', key: 'gnss', mat: this.materials.gnss },
-      { file: 'O-TREX_antennas_1to10.stl', key: 'antennas', mat: this.materials.antennas }
+      { file: 'O-TREX_antennas_1to10.stl', key: 'antennas', mat: this.materials.antennas },
+      { file: 'O-TREX_electronics_enclosure_1to10.stl', key: 'enclosure', mat: this.materials.enclosure }
     ];
 
     let loadedCount = 0;
-    let failed = false;
+    const totalParts = stlPartsConfig.length;
 
-    partsConfig.forEach(config => {
+    this.showLoadingStatus('LOADING O-TREX 3D CAD MODEL...');
+
+    stlPartsConfig.forEach(config => {
       loader.load(
         `assets/stl_parts/${config.file}`,
         (geometry) => {
-          if (failed || this.isLoaded) return;
           geometry.rotateX(-Math.PI / 2);
           geometry.computeVertexNormals();
 
@@ -255,190 +193,75 @@ class OTrex3DSimulation {
           } else {
             this.modelGroup.add(mesh);
             this.parts[config.key] = mesh;
+            if (config.key === 'wind_turbine') {
+              this.windTurbineMesh = mesh;
+            }
           }
 
           loadedCount++;
-          if (loadedCount === partsConfig.length) {
-            clearTimeout(fallbackTimer);
-            this.centerAndScaleModelGroup();
-            this.onModelReady();
+          const percent = Math.round((loadedCount / totalParts) * 100);
+          this.showLoadingStatus(`LOADING CAD PARTS: ${percent}%`);
+
+          if (loadedCount === totalParts) {
+            this.onAllPartsLoaded();
           }
         },
         undefined,
-        (err) => {
-          if (!failed && !this.isLoaded) {
-            failed = true;
-            clearTimeout(fallbackTimer);
-            console.warn('Multi-part STL failed, switching to procedural CAD builder...', err);
-            this.buildProceduralCADModel();
-          }
+        (error) => {
+          console.warn(`Failed loading ${config.file}, fallback assembly load...`, error);
+          this.loadSingleAssemblyFallback();
         }
       );
     });
   }
 
-  centerAndScaleModelGroup() {
-    const box = new THREE.Box3().setFromObject(this.modelGroup);
-    const center = box.getCenter(new THREE.Vector3());
-    const size = box.getSize(new THREE.Vector3());
+  loadSingleAssemblyFallback() {
+    const loader = new THREE.STLLoader();
+    loader.load('assets/stl_parts/O-TREX_assembly_1to10.stl', (geometry) => {
+      geometry.rotateX(-Math.PI / 2);
+      geometry.computeVertexNormals();
+      geometry.center();
+      const mesh = new THREE.Mesh(geometry, this.materials.hull_port);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      this.modelGroup.add(mesh);
+      this.onAllPartsLoaded();
+    }, undefined, (err) => {
+      console.error('Failed loading fallback assembly STL', err);
+      this.hideLoadingStatus();
+    });
+  }
+
+  onAllPartsLoaded() {
+    this.isLoaded = true;
+
+    // Calculate combined bounding box of all multi-color STL parts
+    const combinedBox = new THREE.Box3().setFromObject(this.modelGroup);
+    if (this.sensorPodGroup.children.length > 0) {
+      combinedBox.expandByObject(this.sensorPodGroup);
+    }
+
+    const center = combinedBox.getCenter(new THREE.Vector3());
+    const size = combinedBox.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z);
 
     if (maxDim > 0) {
+      // Center the multi-color model at origin
       this.modelGroup.position.sub(center);
-      const scaleFactor = 120 / maxDim;
-      this.modelGroup.scale.set(scaleFactor, scaleFactor, scaleFactor);
-    }
-  }
+      this.sensorPodGroup.position.sub(center);
 
-  buildProceduralCADModel() {
-    if (this.isLoaded) return;
-    this.modelGroup.clear();
-    this.sensorPodGroup.clear();
-    this.parts = {};
+      // Lift slightly above ocean grid
+      this.modelGroup.position.y += 10;
+      this.sensorPodGroup.position.y += 10;
 
-    // 1. Twin Catamaran Hydrodynamic Pontoons (Port & Starboard)
-    const hullShape = new THREE.Shape();
-    hullShape.moveTo(0, 0);
-    hullShape.lineTo(60, 0);
-    hullShape.quadraticCurveTo(80, 5, 90, 10);
-    hullShape.quadraticCurveTo(80, 15, 60, 20);
-    hullShape.lineTo(0, 20);
-    hullShape.lineTo(0, 0);
-
-    const hullGeo = new THREE.CylinderGeometry(6, 4, 110, 16);
-    hullGeo.rotateZ(Math.PI / 2);
-
-    const portHull = new THREE.Mesh(hullGeo, this.materials.hull);
-    portHull.position.set(0, 5, -24);
-    portHull.scale.set(1, 0.8, 1);
-    portHull.castShadow = true;
-    this.modelGroup.add(portHull);
-    this.parts['port_hull'] = portHull;
-
-    const stbdHull = new THREE.Mesh(hullGeo, this.materials.hull);
-    stbdHull.position.set(0, 5, 24);
-    stbdHull.scale.set(1, 0.8, 1);
-    stbdHull.castShadow = true;
-    this.modelGroup.add(stbdHull);
-    this.parts['stbd_hull'] = stbdHull;
-
-    // 2. Cross Beams & Deck Platform
-    const beamGeo = new THREE.BoxGeometry(100, 4, 52);
-    const deckMesh = new THREE.Mesh(beamGeo, this.materials.deck);
-    deckMesh.position.set(0, 10, 0);
-    deckMesh.castShadow = true;
-    this.modelGroup.add(deckMesh);
-    this.parts['deck'] = deckMesh;
-
-    // 3. Solar Panel Arrays
-    const solarGeo = new THREE.BoxGeometry(70, 2, 20);
-    const solarPort = new THREE.Mesh(solarGeo, this.materials.solar);
-    solarPort.position.set(-5, 13, -14);
-    solarPort.rotation.x = -0.08;
-    this.modelGroup.add(solarPort);
-
-    const solarStbd = new THREE.Mesh(solarGeo, this.materials.solar);
-    solarStbd.position.set(-5, 13, 14);
-    solarStbd.rotation.x = 0.08;
-    this.modelGroup.add(solarStbd);
-    this.parts['solar'] = solarPort;
-
-    // 4. Wind Turbine Tower & Aerodynamic Blades
-    const towerGeo = new THREE.CylinderGeometry(1.5, 2.5, 35, 12);
-    const tower = new THREE.Mesh(towerGeo, this.materials.windTurbine);
-    tower.position.set(25, 28, 0);
-    this.modelGroup.add(tower);
-
-    const nacelleGeo = new THREE.BoxGeometry(10, 6, 6);
-    const nacelle = new THREE.Mesh(nacelleGeo, this.materials.windTurbine);
-    nacelle.position.set(25, 46, 0);
-    this.modelGroup.add(nacelle);
-
-    // Rotor Blades
-    for (let i = 0; i < 3; i++) {
-      const bladeGeo = new THREE.BoxGeometry(2, 18, 0.6);
-      const blade = new THREE.Mesh(bladeGeo, this.materials.windTurbine);
-      blade.position.y = 9;
-      blade.rotation.z = (i * Math.PI * 2) / 3;
-      this.windTurbineGroup.add(blade);
-    }
-    this.windTurbineGroup.position.set(28, 46, 0);
-    this.modelGroup.add(this.windTurbineGroup);
-    this.parts['wind_turbine'] = tower;
-
-    // 5. Electronics Watertight Enclosure (Pixhawk 6X & RPi 5)
-    const encGeo = new THREE.BoxGeometry(28, 14, 20);
-    const enclosure = new THREE.Mesh(encGeo, this.materials.enclosure);
-    enclosure.position.set(-15, 18, 0);
-    this.modelGroup.add(enclosure);
-    this.parts['enclosure'] = enclosure;
-
-    // 6. GNSS Radome & Antennas
-    const gnssGeo = new THREE.CylinderGeometry(4, 4, 3, 16);
-    const gnss = new THREE.Mesh(gnssGeo, this.materials.gnss);
-    gnss.position.set(-24, 26, 0);
-    this.modelGroup.add(gnss);
-    this.parts['gnss'] = gnss;
-
-    const antGeo = new THREE.CylinderGeometry(0.4, 0.4, 24, 8);
-    const ant1 = new THREE.Mesh(antGeo, this.materials.antennas);
-    ant1.position.set(-20, 32, -8);
-    this.modelGroup.add(ant1);
-
-    const ant2 = new THREE.Mesh(antGeo, this.materials.antennas);
-    ant2.position.set(-20, 32, 8);
-    this.modelGroup.add(ant2);
-
-    // 7. Stern Thruster Motors
-    const thrusterGeo = new THREE.CylinderGeometry(3, 3, 12, 12);
-    thrusterGeo.rotateZ(Math.PI / 2);
-
-    const tPort = new THREE.Mesh(thrusterGeo, this.materials.thrusters);
-    tPort.position.set(-48, 4, -24);
-    this.modelGroup.add(tPort);
-
-    const tStbd = new THREE.Mesh(thrusterGeo, this.materials.thrusters);
-    tStbd.position.set(-48, 4, 24);
-    this.modelGroup.add(tStbd);
-    this.parts['thrusters'] = tPort;
-
-    // 8. Deployable Oceanographic Sensor Pod (CTD + DO + pH)
-    this.attachInteractiveComponents();
-
-    this.onModelReady();
-  }
-
-  attachInteractiveComponents() {
-    this.sensorPodGroup.clear();
-
-    const podBodyGeo = new THREE.CylinderGeometry(5, 5, 20, 16);
-    const podMesh = new THREE.Mesh(podBodyGeo, this.materials.sensorPod);
-
-    const podCapGeo = new THREE.SphereGeometry(5, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2);
-    const podCap = new THREE.Mesh(podCapGeo, this.materials.winch);
-    podCap.position.y = -10;
-    podCap.rotation.x = Math.PI;
-    podMesh.add(podCap);
-
-    // Sensor probe tips
-    for (let i = 0; i < 3; i++) {
-      const tipGeo = new THREE.CylinderGeometry(0.6, 0.6, 6, 8);
-      const tip = new THREE.Mesh(tipGeo, this.materials.antennas);
-      const angle = (i * Math.PI * 2) / 3;
-      tip.position.set(Math.cos(angle) * 2.5, -13, Math.sin(angle) * 2.5);
-      podMesh.add(tip);
+      // Scale model to fit viewport cleanly
+      const targetScale = 140 / maxDim;
+      this.modelGroup.scale.set(targetScale, targetScale, targetScale);
+      this.sensorPodGroup.scale.set(targetScale, targetScale, targetScale);
     }
 
-    podMesh.castShadow = true;
-    this.sensorPodGroup.add(podMesh);
-    this.sensorPodGroup.position.set(0, 0, 0);
-    this.parts['sensor_pod'] = podMesh;
-  }
-
-  onModelReady() {
-    this.isLoaded = true;
     this.hideLoadingStatus();
-    console.log('O-TREX 3D CAD Engine ready!');
+    console.log('O-TREX 3D CAD Multi-Color Assembly Loaded!');
   }
 
   showLoadingStatus(msg) {
@@ -532,7 +355,7 @@ class OTrex3DSimulation {
         break;
       case 'iso':
       default:
-        targetPos.set(140, 110, 170);
+        targetPos.set(160, 130, 190);
         break;
     }
 
@@ -591,7 +414,7 @@ class OTrex3DSimulation {
         if (this.renderMode === 'wireframe') {
           mesh.material = this.materials.wireframe;
         } else {
-          const origMat = this.materials[key] || this.materials.hull;
+          const origMat = this.materials[key] || this.materials.hull_port;
           mesh.material = origMat;
         }
       }
@@ -605,11 +428,6 @@ class OTrex3DSimulation {
       this.controls.autoRotate = this.autoRotate;
       this.controls.autoRotateSpeed = 1.5;
       this.controls.update();
-    }
-
-    // Aerodynamic Wind Turbine Rotation
-    if (this.windTurbineGroup) {
-      this.windTurbineGroup.rotation.x += 0.04;
     }
 
     // Smooth Pod Deployment Interpolation
